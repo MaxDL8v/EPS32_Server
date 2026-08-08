@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 
+// statische Dateien bereitstellen
+app.use(express.static("public"));
+
 let lastCommand = "NONE";
 
 app.post("/api/setCommand", (req, res) => {
@@ -11,6 +14,11 @@ app.post("/api/setCommand", (req, res) => {
 
 app.get("/api/getCommand", (req, res) => {
     res.send(lastCommand);
+});
+
+// HTML-Seite ausliefern
+app.get("/command", (req, res) => {
+    res.sendFile(__dirname + "/public/command.html");
 });
 
 app.get("/", (req, res) => {
