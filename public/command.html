@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>ESP32 Befehl senden</title>
+<style>
+  body { font-family: Arial; padding: 20px; }
+  input { padding: 10px; width: 300px; font-size: 16px; }
+  button { padding: 10px 20px; font-size: 16px; margin-left: 10px; }
+</style>
+</head>
+<body>
+
+<h2>ESP32 Befehl senden</h2>
+
+<input id="cmd" type="text" placeholder="Befehl eingeben">
+<button onclick="sendCommand()">Senden</button>
+
+<p id="status"></p>
+
+<script>
+function sendCommand() {
+  const command = document.getElementById("cmd").value;
+
+  fetch("https://esp32server-production-55af.up.railway.app/api/setCommand", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ command: command })
+  })
+  .then(res => res.text())
+  .then(text => {
+    document.getElementById("status").innerText = "Server Antwort: " + text;
+  })
+  .catch(err => {
+    document.getElementById("status").innerText = "Fehler: " + err;
+  });
+}
+</script>
+
+</body>
+</html>
